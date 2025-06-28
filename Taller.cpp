@@ -1,26 +1,19 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/kuYFMccO)
-# parte1
-✏️ Parte I – Completar una función del CRUD
-📝 Instrucciones:
-A continuación te damos un programa incompleto que implementa parte del CRUD de estudiantes usando estructuras (struct), funciones y manejo de archivos. Tu tarea es completar la función faltante correspondiente a una operación del CRUD , siguiendo las indicaciones.
-
-Puedes usar o no el manejo de archivos según lo desees, pero si lo implementas correctamente obtendrás **2 puntos extra**.
-🔧 Código proporcionado (incompleto):
 
 
-```cpp
 #include <iostream>
 #include <fstream>
 using namespace std;
 
-struct Estudiante {
+struct Estudiante
+{
     string nombre;
     string carnet;
     int edad;
 };
 
 // Función para agregar estudiante (CREATE)
-void agregarEstudiante() {
+void agregarEstudiante()
+{
     Estudiante e;
     cout << "Nombre (sin espacios): ";
     cin >> e.nombre;
@@ -30,35 +23,44 @@ void agregarEstudiante() {
     cin >> e.edad;
 
     ofstream archivo("estudiantes.txt", ios::app);
-    if (archivo.is_open()) {
+    if (archivo.is_open())
+    {
         archivo << e.nombre << " " << e.carnet << " " << e.edad << endl;
         archivo.close();
         cout << "Estudiante agregado correctamente.\n";
-    } else {
+    }
+    else
+    {
         cout << "Error al abrir el archivo.\n";
     }
 }
 
 // Función para mostrar estudiantes (READ)
-void mostrarEstudiantes() {
+void mostrarEstudiantes()
+{
     ifstream archivo("estudiantes.txt");
     Estudiante e;
 
-    if (archivo.is_open()) {
+    if (archivo.is_open())
+    {
         cout << "\n--- Lista de Estudiantes ---\n";
-        while (archivo >> e.nombre >> e.carnet >> e.edad) {
-            cout << "Nombre: " << e.nombre 
+        while (archivo >> e.nombre >> e.carnet >> e.edad)
+        {
+            cout << "Nombre: " << e.nombre
                  << ", Carnet: " << e.carnet
                  << ", Edad: " << e.edad << endl;
         }
         archivo.close();
-    } else {
+    }
+    else
+    {
         cout << "Error al abrir el archivo.\n";
     }
 }
 
 // Función para modificar estudiante (UPDATE)
-void modificarEstudiante() {
+void modificarEstudiante()
+{
     ifstream archivo("estudiantes.txt");
     ofstream temp("temp.txt");
     Estudiante e;
@@ -68,9 +70,12 @@ void modificarEstudiante() {
     cout << "Ingrese carnet a modificar: ";
     cin >> buscado;
 
-    if (archivo.is_open() && temp.is_open()) {
-        while (archivo >> e.nombre >> e.carnet >> e.edad) {
-            if (e.carnet == buscado) {
+    if (archivo.is_open() && temp.is_open())
+    {
+        while (archivo >> e.nombre >> e.carnet >> e.edad)
+        {
+            if (e.carnet == buscado)
+            {
                 Estudiante nuevo;
                 cout << "Nuevo nombre (sin espacios): ";
                 cin >> nuevo.nombre;
@@ -81,7 +86,9 @@ void modificarEstudiante() {
 
                 temp << nuevo.nombre << " " << nuevo.carnet << " " << nuevo.edad << endl;
                 modificado = true;
-            } else {
+            }
+            else
+            {
                 temp << e.nombre << " " << e.carnet << " " << e.edad << endl;
             }
         }
@@ -94,24 +101,66 @@ void modificarEstudiante() {
             cout << "Estudiante modificado correctamente.\n";
         else
             cout << "Carnet no encontrado.\n";
-    } else {
+    }
+    else
+    {
         cout << "Error abriendo los archivos.\n";
     }
 }
 
 // -----------------------------
 // 👇 TU TAREA: Completa esta función (DELETE)
-void eliminarEstudiante() {
-    // Escribe aquí la función que elimine un estudiante por su carnet.
-    // Puedes usar o no el manejo de archivos.
-    // Si lo haces con archivos, ganarás **2 puntos extra**.
+void eliminarEstudiante()
+{
+    ifstream archivo("estudiantes.txt");
+    ofstream temp("temp.txt");
+    Estudiante e;
+    string buscado;
+    int eliminado = 0;
+
+    cout << "Ingrese carnet a eliminar: ";
+    cin >> buscado;
+
+    if (archivo.is_open() && temp.is_open())
+    {
+        while (archivo >> e.nombre >> e.carnet >> e.edad)
+        {
+            if (e.carnet != buscado)
+            {
+                temp << e.nombre << " " << e.carnet << " " << e.edad << endl;
+            }
+            else
+            {
+                eliminado = 1;
+            }
+        }
+        archivo.close();
+        temp.close();
+        remove("estudiantes.txt");
+        rename("temp.txt", "estudiantes.txt");
+
+        if (eliminado == 1)
+            cout << "Estudiante eliminado correctamente.\n";
+        else if (eliminado == 0)
+            cout << "Carnet no encontrado.\n";
+    }
+    else
+    {
+        cout << "Error al abrir los archivos.\n";
+    }
 }
+// Escribe aquí la función que elimine un estudiante por su carnet.
+// Puedes usar o no el manejo de archivos.
+// Si lo haces con archivos, ganarás **2 puntos extra**.
+
 // -----------------------------
 
 // Menú principal
-int main() {
+int main()
+{
     int opcion;
-    do {
+    do
+    {
         cout << "\n=== CRUD de Estudiantes ===\n";
         cout << "1. Agregar estudiante\n";
         cout << "2. Mostrar todos\n";
@@ -121,22 +170,28 @@ int main() {
         cout << "Seleccione una opción: ";
         cin >> opcion;
 
-        switch (opcion) {
-            case 1: agregarEstudiante(); break;
-            case 2: mostrarEstudiantes(); break;
-            case 3: modificarEstudiante(); break;
-            case 4: eliminarEstudiante(); break;
-            case 5: cout << "Saliendo...\n"; break;
-            default: cout << "Opción inválida.\n";
+        switch (opcion)
+        {
+        case 1:
+            agregarEstudiante();
+            break;
+        case 2:
+            mostrarEstudiantes();
+            break;
+        case 3:
+            modificarEstudiante();
+            break;
+        case 4:
+            eliminarEstudiante();
+            break;
+        case 5:
+            cout << "Saliendo...\n";
+            break;
+        default:
+            cout << "Opción inválida.\n";
         }
 
     } while (opcion != 5);
 
     return 0;
-```
-📌 Tu tarea:
-Completa la función eliminarEstudiante() para que:
-
-Lea el carnet del estudiante a eliminar.
-Elimine ese registro del archivo o de la lista en memoria.
-Muestre un mensaje de confirmación o error.
+}
